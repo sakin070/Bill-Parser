@@ -1,0 +1,4 @@
+pip==19.2.3
+wheel==0.33.6
+pytest==3.2.1
+tesserocr==2.4.1
