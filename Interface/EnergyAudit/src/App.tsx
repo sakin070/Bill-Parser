@@ -3,9 +3,11 @@ import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
+import pictureConfig from './pages/pictureConfig';
+import config from './pages/config';
 
 /* Core CSS required for Ionic components to work properly */
-import '@ionic/react/css/core.css';
+import '@ionic/react/css/corgit mee.css';
 
 /* Basic CSS for apps built with Ionic */
 import '@ionic/react/css/normalize.css';
@@ -28,6 +30,8 @@ const App: React.FC = () => (
     <IonReactRouter>
       <IonRouterOutlet>
         <Route path="/home" component={Home} exact={true} />
+        <Route path="/picture" component={pictureConfig} exact={true} />
+        <Route path="/config" component={config} exact={true} />
         <Route exact path="/" render={() => <Redirect to="/home" />} />
       </IonRouterOutlet>
     </IonReactRouter>
