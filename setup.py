@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 with open("README.md", "r") as readme_file:
     readme = readme_file.read()
 
-requirements = ["Pillow>=4.2.1"]
+requirements = ["Pillow>=4.2.1", 'pdf2image', 'tesserocr']
 
 setup(
     name="billToText",
