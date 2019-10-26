@@ -5,6 +5,7 @@ import configparser
 
 
 # testImage has no alpha, so when processing documents, remember that we don't want alpha
+# create an array for a list of supported bill templates
 
 def parseTuple(tpl):
     tpl = tpl[1:-1]
@@ -30,4 +31,3 @@ def dictionaryToJson(dic):
     json_data = json.dumps(dic)
     return json_data
 
-print(extractInfo('testImg.png'))
