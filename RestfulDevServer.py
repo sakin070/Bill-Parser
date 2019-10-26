@@ -7,9 +7,13 @@ api = Api(app)
 
 
 class ParseBill(Resource):
-    def get(self,bill):
-        return {"state":"its working"}
-    def put(self, bill):
+    @staticmethod
+    def get(bill):
+        print (bill)
+        return bt.extractInfo(bill)
+
+    @staticmethod
+    def put(bill):
         return bt.extractInfo(bill)
 
 
