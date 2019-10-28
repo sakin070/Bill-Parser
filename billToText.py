@@ -41,3 +41,4 @@ def dictionaryToJson(dic):
     json_data = json.dumps(dic)
     return json_data
 
+print(extractInfo("./testImg.png"))
