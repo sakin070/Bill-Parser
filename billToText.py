@@ -19,7 +19,7 @@ def parseTuple(tpl):
     return lst
 
 def pdfToImages(filePath,name='image'):
-    pages = convert_from_path("testPDF.pdf", 200, thread_count=3, output_folder=tempProcessingLocation)
+    pages = convert_from_path(filePath, 200, thread_count=3, output_folder=tempProcessingLocation)
     for i in range(pages.__len__()):
         pages[i].save(tempProcessingLocation+'/ '+name+str(i)+'.jpeg', 'JPEG')
 
@@ -41,4 +41,4 @@ def dictionaryToJson(dic):
     json_data = json.dumps(dic)
     return json_data
 
-print(extractInfo("./testImg.png"))
+print(extractInfo("./resources/testImg.png"))
