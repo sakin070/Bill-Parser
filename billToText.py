@@ -2,9 +2,14 @@ from PIL import Image
 import tesserocr
 import json
 import configparser
+from pdf2image import convert_from_path
+
+tempProcessingLocation = "./imageOutputFolder"
+
 
 
 # testImage has no alpha, so when processing documents, remember that we don't want alpha
+# create an array for a list of supported bill templates
 
 def parseTuple(tpl):
     tpl = tpl[1:-1]
@@ -12,6 +17,12 @@ def parseTuple(tpl):
     lst = tpl.split(', ')
     lst = [float(i) for i in lst]
     return lst
+
+def pdfToImages(filePath,name='image'):
+    pages = convert_from_path(filePath, 200, thread_count=3, output_folder=tempProcessingLocation)
+    for i in range(pages.__len__()):
+        pages[i].save(tempProcessingLocation+'/ '+name+str(i)+'.jpeg', 'JPEG')
+
 
 def extractInfo(imagePath):
     # check if its an object or a path to an object
@@ -30,4 +41,4 @@ def dictionaryToJson(dic):
     json_data = json.dumps(dic)
     return json_data
 
-print(extractInfo('testImg.png'))
+print(extractInfo("./resources/testImg.png"))
