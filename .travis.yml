@@ -8,4 +8,4 @@ before_install:
 install:
   - pip install -r requirements_dev.txt
 script:
-  - py.test --cov-report term-missing --cov app -v
+  - pytest --cov-report term-missing --cov billToText -v
