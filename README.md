@@ -1,5 +1,6 @@
 # Capstone
 SEG4910 - Capstone Project
+[![Build Status](https://travis-ci.com/sakin070/Capstone.svg?token=iRqDDs5xtjrtm1JLCqZB&branch=master)](https://travis-ci.com/sakin070/Capstone)
 
 Project: Fetching Energy Bills Data from Files 
 
