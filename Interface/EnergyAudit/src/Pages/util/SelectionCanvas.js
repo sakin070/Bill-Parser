@@ -35,7 +35,7 @@ class SelectionCanvas extends React.Component {
         return (
             <div>
                 {/*I dont really know what im doing here*/}
-                <Rector width="1275" height="1650"  onSelected={this.onSelected}/>
+                <Rector width="640" height="480"  onSelected={this.onSelected}/>
                 <div>
                     {this.getSelectionStr()}
                 </div>
@@ -91,7 +91,7 @@ class Rector extends React.Component {
         }
 
         this.ctx.clearRect(0, 0, this.props.width, this.props.height);
-        this.ctx.drawImage(this.image,0,0, this.props.width, this.props.height)
+        this.ctx.drawImage(this.image,0,0, this.props.width, this.props.height);
         if (this.isDrag) {
             const rect = {
                 x: this.startX,
