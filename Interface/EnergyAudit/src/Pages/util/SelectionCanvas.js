@@ -35,7 +35,7 @@ class SelectionCanvas extends React.Component {
         return (
             <div>
                 {/*I dont really know what im doing here*/}
-                <Rector width="640" height="480"  onSelected={this.onSelected}/>
+                <Rector width="1275" height="1650"  onSelected={this.onSelected}/>
                 <div>
                     {this.getSelectionStr()}
                 </div>
@@ -61,6 +61,7 @@ class Rector extends React.Component {
     startY = -1;
     curX = -1;
     curY = -1;
+    image = new Image();
 
     constructor(props) {
         super(props);
@@ -68,12 +69,20 @@ class Rector extends React.Component {
 
     componentDidMount(props) {
         this.ctx = this.canvas.getContext('2d');
+        this.image.src = "testImg.png";
+        this.image.addEventListener("load" , () => this.ctx.drawImage(this.image,0,0, this.props.width, this.props.height) , false);
         this.ctx.strokeStyle = this.props.strokeStyle;
         this.ctx.lineWidth = this.props.lineWidth;
+
+
         this.addMouseEvents()
+    }
+    draw(){
+
     }
 
     updateCanvas = () => {
+        //this.draw()
         if (this.isDrag) {
             requestAnimationFrame(this.updateCanvas)
         }
@@ -82,6 +91,7 @@ class Rector extends React.Component {
         }
 
         this.ctx.clearRect(0, 0, this.props.width, this.props.height);
+        this.ctx.drawImage(this.image,0,0, this.props.width, this.props.height)
         if (this.isDrag) {
             const rect = {
                 x: this.startX,
@@ -91,7 +101,7 @@ class Rector extends React.Component {
             };
             this.ctx.strokeRect(rect.x, rect.y, rect.w, rect.h)
         }
-        this.isDirty = false
+        this.isDirty = false;
     };
 
     componentWillUnmount() {
@@ -138,7 +148,7 @@ class Rector extends React.Component {
 
     render() {
         console.log('render');
-        return <canvas width={this.props.width} height={this.props.height} ref={(c) => {this.canvas=c}}/>
+        return <canvas  width={this.props.width} height={this.props.height} ref={(c) => {this.canvas=c}}/>
     }
 }
 
