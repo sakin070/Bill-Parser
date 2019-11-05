@@ -5,7 +5,7 @@ class TestBillToTextMethods(unittest.TestCase):
 
     def testBillToText(self):
         expected = '{"date": "2019-09-06", "usage": "207.00", "cost": "$94.09"}'
-        actual = bt.extractInfo("./resources/testImg.png")
+        actual = bt.extractInfo("backend/resources/testImg.png")
         self.assertEqual(actual,expected)
 
     def testParseTuple(self):
