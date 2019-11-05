@@ -4,7 +4,7 @@ import json
 import configparser
 from pdf2image import convert_from_path
 
-tempProcessingLocation = "backend/imageOutputFolder"
+tempProcessingLocation = "./imageOutputFolder"
 
 
 
@@ -24,13 +24,13 @@ def pdfToImages(filePath,name='image'):
         pages[i].save(tempProcessingLocation+'/ '+name+str(i)+'.jpeg', 'JPEG')
 
 
-def extractInfo(imagePath):
+def extractInfo(imagePath,config):
     # check if its an object or a path to an object
     # current implementation is of a path
 
     imageInfo = {}
     image = Image.open(imagePath)
-    items = readConfig()
+    items = readConfig(selection=config)
     for item in items:
         imageSection = image.crop(parseConfigItems(item[1]))
         imageInfo[item[0]] = str(tesserocr.image_to_text(imageSection)).rstrip()
@@ -43,7 +43,7 @@ def dictionaryToJson(dic):
     return json_data
 
 
-def readConfig(configFile = 'backend/config.cfg', selection='Hydro Ottawa'):
+def readConfig(configFile = 'config.cfg', selection='Hydro Ottawa'):
     config = configparser.ConfigParser()
     config.read(configFile)
     items = config.items(selection)
