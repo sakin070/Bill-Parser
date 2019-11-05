@@ -4,7 +4,7 @@ import json
 import configparser
 from pdf2image import convert_from_path
 
-tempProcessingLocation = "./imageOutputFolder"
+tempProcessingLocation = "backend/imageOutputFolder"
 
 
 
@@ -43,7 +43,7 @@ def dictionaryToJson(dic):
     return json_data
 
 
-def readConfig(configFile = 'config.cfg', selection='Hydro Ottawa'):
+def readConfig(configFile = 'backend/config.cfg', selection='Hydro Ottawa'):
     config = configparser.ConfigParser()
     config.read(configFile)
     items = config.items(selection)

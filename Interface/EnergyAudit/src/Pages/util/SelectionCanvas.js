@@ -34,7 +34,6 @@ class SelectionCanvas extends React.Component {
     render() {
         return (
             <div>
-                {/*I dont really know what im doing here*/}
                 <Rector width="640" height="480"  onSelected={this.onSelected}/>
                 <div>
                     {this.getSelectionStr()}
