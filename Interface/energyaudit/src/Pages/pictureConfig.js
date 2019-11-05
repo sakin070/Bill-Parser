@@ -1,4 +1,6 @@
 import React from "react"
+import SelectionCanvas from "./util/SelectionCanvas";
+import ConfigTable from "./util/ConfigTable";
 
 class PictureConfig extends React.Component{
     constructor(props){
@@ -7,8 +9,15 @@ class PictureConfig extends React.Component{
 
     render() {
         return(
-            <div>
-
+            <div className="container">
+                <div className="row">
+                    <div className="col col-lg-9">
+                       <SelectionCanvas/>
+                    </div>
+                    <div className="col col-lg-3">
+                       <ConfigTable/>
+                    </div>
+                </div>
             </div>
         )
     }
