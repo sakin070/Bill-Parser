@@ -1,11 +1,10 @@
 import os
 from flask import Flask, jsonify, request
-from flask_restful import Resource, Api
 from werkzeug.utils import secure_filename
 import billToText as bt
 
 app = Flask(__name__)
-api = Api(app)
+# api = Api(app)
 UPLOAD_FOLDER = "./imageOutputFolder"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
