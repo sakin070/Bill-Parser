@@ -15,10 +15,7 @@ class ConfigTable extends React.Component{
     render() {
         return <div>
             <form>
-                <label>
-                    Configuration Identifier:
-                    <input type="text" name="configID" />
-                </label>
+
             </form>
 
 

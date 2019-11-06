@@ -9,7 +9,8 @@ class PictureConfig extends React.Component{
         this.state = {
             selections: [],
             currentSelection:[],
-            inputValue: ''
+            inputValue: '',
+            configurationIdentifier: ''
         }
     }
 
@@ -32,6 +33,10 @@ class PictureConfig extends React.Component{
         this.setState ({inputValue:e.target.value,})
     };
 
+    updateConfigurationIdentifierValue = (e) =>{
+        this.setState ({configurationIdentifier:e.target.value,})
+    };
+
 
     render() {
         return(
@@ -39,10 +44,13 @@ class PictureConfig extends React.Component{
                 <div className="row">
                     <div className="col col-lg-9">
                        <SelectionCanvas onSelect={this.addSelection}/>
-                        {JSON.stringify(this.state, null, 2)}
+                        {/*{JSON.stringify(this.state, null, 2)}*/}
                     </div>
                     <div className="col col-lg-3">
-
+                        <label>
+                            Configuration Identifier:
+                            <input type="text" name="configID" onChange={this.updateConfigurationIdentifierValue}/>
+                        </label>
                         {this.state.selections.map((d,key) => {
                             return <form id={key}>
                                 <div className="row">
@@ -54,9 +62,7 @@ class PictureConfig extends React.Component{
                                     </div>
                                 </div>
                             </form> })
-
                         }
-
 
                         {this.state.currentSelection.map((d,key) => {
                             return <form id={key}>
@@ -67,16 +73,16 @@ class PictureConfig extends React.Component{
                                     <div className="col">
                                         <input type="text" className="form-control" placeholder="Location" value={JSON.stringify(d, null, 2)}/>
                                     </div>
+                                    <div className='col'>
+                                        <button type="button" className="btn btn-info" onClick={this.storeSelection}>Add Field</button>
+                                    </div>
                                 </div>
-                            </form> })
-
+                            </form>
+                        })
                         }
-
-                        <button type="button" className="btn btn-info" onClick={this.storeSelection}>Add Field</button>
                         <br/>
                         <button type="button" className="btn btn-success">Save Configuration</button>
                        <ConfigTable/>
-
                     </div>
                 </div>
             </div>
