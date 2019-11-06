@@ -6,7 +6,7 @@ class TestBillToTextMethods(unittest.TestCase):
     def testBillToText(self):
         expected = '{"date": "2019-09-06", "usage": "207.00", "cost": "$94.09"}'
         actual = bt.extractInfo("backend/resources/testImg.png")
-        self.assertEqual(actual,expected)
+        self.assertEqual(actual, expected)
 
     def testParseTuple(self):
         expected = [260.0, 674.0, 406.0, 720.0]
@@ -21,7 +21,9 @@ class TestBillToTextMethods(unittest.TestCase):
 
     def testReadConfig(self):
         expected = [('date', '(260, 674, 406, 720)'), ('usage', '(301, 386, 400, 432)'), ('cost', '(1104, 675, 1224, 720)')]
-        actual = bt.readConfig()
+        actual = bt.readConfig(selection='Hydro Ottawa')
         self.assertEqual(actual, expected)
+
+
 if __name__ == '__main__':
     unittest.main()
