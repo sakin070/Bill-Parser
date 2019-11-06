@@ -16,17 +16,19 @@ def allowed_file(filename):
 
 @app.route('/parse-bill', methods=['POST'])
 def parseBill():
-    # check if the post request has the file part
+    #Check if the post request has the file part
     if 'file' not in request.files or 'configuration' not in request.form:
         resp = jsonify({'message' : 'No file part in the request'})
         resp.status_code = 400
         return resp
     file = request.files['file']
     configuration = request.form.get('configuration')
+    #Check for a name and configuration
     if file.filename == '' or configuration == '':
         resp = jsonify({'message' : 'No file selected for uploading or missing configuration'})
         resp.status_code = 400
         return resp
+    #Check if file is a valid format
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
@@ -42,7 +44,7 @@ def parseBill():
 
 @app.route('/parse-multiple-bills', methods=['POST'])
 def parseBillMultipleBills():
-    # check if the post request has the file part
+    #Check if the post request has the file parts for one config
     if 'files[]' not in request.files or 'configuration' not in request.form:
         resp = jsonify({'message': 'No file part in the request'})
         resp.status_code = 400
@@ -54,6 +56,7 @@ def parseBillMultipleBills():
     results = []
     success = False
 
+    #Check if files are a valid format
     for file in files:
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
