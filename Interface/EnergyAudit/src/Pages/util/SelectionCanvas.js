@@ -16,10 +16,14 @@ class SelectionCanvas extends React.Component {
     }
 
     onSelected (rect)  {
+        if (!rect.w && !rect.h) {
+            return;
+        }
         this.setState({
             selected: true,
             ...rect
-        })
+        });
+        this.props.onSelect(rect);
 
     };
 
