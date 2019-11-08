@@ -12,12 +12,15 @@ function App() {
   return (
     <Router>
       <nav>
-        <Link to="/" style={{ color: "white" }}>
-          <h3>Energy Audit</h3>
-        </Link>
+        <div class="navContainer">
+          <Link to="/" style={{ color: "white" }}>
+            <h3>Energy Audit</h3>
+          </Link>
+        </div>
       </nav>
-      <Route path="/" exact component={pictureConfig} />
-      <Route path="/picture" exact component={Home} />
+
+      <Route path="/" exact component={Home} />
+      <Route path="/picture" exact component={pictureConfig} />
       <Route path="/configuration" exact component={config} />
     </Router>
   );
