@@ -11,14 +11,13 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 function App() {
   return (
     <Router>
-      <nav>
-        <div class="navContainer">
+      <div class="navContainer">
+        <nav>
           <Link to="/" style={{ color: "white" }}>
             <h3>Energy Audit</h3>
           </Link>
-        </div>
-      </nav>
-
+        </nav>
+      </div>
       <Route path="/" exact component={Home} />
       <Route path="/picture" exact component={pictureConfig} />
       <Route path="/configuration" exact component={config} />
