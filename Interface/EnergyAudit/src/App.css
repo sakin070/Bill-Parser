@@ -24,41 +24,29 @@
 }
 
 nav {
-  display: block;
-  padding: 1.5rem;
+  display: inline-block;
+  width: 100%;
+  padding: 1.5rem 15rem;
   color: white;
-  background-color: #32353b;
-}
 
-.navContainer {
-  height: 100%;
-  margin: 0 10rem;
-  padding: 0 1rem;
+  background-color: #282c34;
 }
 
 nav h3 {
   float: left;
-  font-size: 100%;
+  font-size: 225%;
+  color: white;
+  font-weight: bold;
+  font-family: Antonio, Open Sans, Helvetica Neue, Helvetica, Arial,
+    "sans-serif";
 }
 
 .mainContainer {
   text-align: center;
-  padding: 5rem 0rem 10rem;
+  padding: 10rem 0rem 10rem;
   height: 100vh;
 
-  background: #485563; /* fallback for old browsers */
-  background: #ece9e6; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    #ffffff,
-    #ece9e6
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to right,
-    #ffffff,
-    #ece9e6
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+  background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
   position: relative;
 }
 
@@ -69,6 +57,27 @@ img {
   vertical-align: middle;
 }
 
+h1 {
+  color: black;
+  font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 375%;
+}
+
+p {
+  font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+  font-size: 120%;
+}
+
+h3 {
+  color: #ffffff;
+  font-family: Antonio, Open Sans, Helvetica Neue, Helvetica, Arial,
+    "sans-serif";
+}
 .marginBot3 {
   margin-bottom: 3em;
+}
+
+hr {
+  width: 20%;
 }
