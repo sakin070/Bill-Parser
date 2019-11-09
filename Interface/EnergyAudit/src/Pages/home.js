@@ -3,7 +3,7 @@ import "../App.css";
 
 import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
-import Logo from "./resources/imageToJSON.jpg";
+import Logo from "./resources/imageToJSON.png";
 
 function home() {
   return (
@@ -12,12 +12,14 @@ function home() {
         class="marginBot3"
         src={Logo}
         alt="Logo"
-        style={{ width: 180 }}
+        style={{ width: 400 }}
       ></img>
-      <h1>Whatever the tool is being called</h1>
+      <h1>Bill-to-Text</h1>
+      <hr />
       <div class="container">
         <p class="marginBot3">
-          Give a quick blurb on what it does, you know the ref
+          Convert your bills to JSON using pre-built or create your own
+          configurations.
         </p>
         <div className="configButton">
           <Link to="/picture">
