@@ -3,7 +3,9 @@
 }
 
 .App-logo {
+  animation: App-logo-spin infinite 20s linear;
   height: 40vmin;
+  pointer-events: none;
 }
 
 .App-header {
@@ -18,5 +20,64 @@
 }
 
 .App-link {
-  color: #09d3ac;
+  color: #61dafb;
+}
+
+nav {
+  display: inline-block;
+  width: 100%;
+  padding: 1.5rem 15rem;
+  color: white;
+
+  background-color: #282c34;
+}
+
+nav h3 {
+  float: left;
+  font-size: 225%;
+  color: white;
+  font-weight: bold;
+  font-family: Antonio, Open Sans, Helvetica Neue, Helvetica, Arial,
+    "sans-serif";
+}
+
+.mainContainer {
+  text-align: center;
+  padding: 10rem 0rem 10rem;
+  height: 100vh;
+
+  background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+  position: relative;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+h1 {
+  color: black;
+  font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 375%;
+}
+
+p {
+  font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+  font-size: 120%;
+}
+
+h3 {
+  color: #ffffff;
+  font-family: Antonio, Open Sans, Helvetica Neue, Helvetica, Arial,
+    "sans-serif";
+}
+.marginBot3 {
+  margin-bottom: 3em;
+}
+
+hr {
+  width: 20%;
 }

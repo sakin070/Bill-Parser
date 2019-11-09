@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 import SelectionCanvas from "./util/SelectionCanvas";
 import ConfigTable from "./util/ConfigTable";
 
@@ -89,5 +89,4 @@ class PictureConfig extends React.Component{
         )
     }
 }
-export default PictureConfig
-
+export default PictureConfig;
