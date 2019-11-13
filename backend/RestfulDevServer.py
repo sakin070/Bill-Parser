@@ -2,6 +2,7 @@ import os
 from flask import Flask, jsonify, request
 from werkzeug.utils import secure_filename
 import billToText as bt
+import os
 
 app = Flask(__name__)
 UPLOAD_FOLDER = "./imageOutputFolder"
@@ -13,6 +14,23 @@ ALLOWED_EXTENSIONS = set(['pdf', 'png', 'jpg', 'jpeg'])
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+@app.route('/add-selection', methods=['POST'])
+def addSelection():
+    if 'configuration' not in request.form:
+        resp = jsonify({'message' : 'No file part in the request'})
+        resp.status_code = 400
+        return resp
+    configuration = request.form.get('configuration')
+    if configuration == '':
+        resp = jsonify({'message': 'Missing configuration'})
+        resp.status_code = 400
+        return resp
+    resp = bt.addConfiguration(configuration)
+    if resp :
+        resp.status_code = 201
+    else:
+        resp.status_code = 400
+    return resp
 
 @app.route('/parse-bill', methods=['POST'])
 def parseBill():

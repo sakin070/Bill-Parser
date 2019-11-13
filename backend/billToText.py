@@ -32,13 +32,27 @@ def extractInfo(imagePath, config='Hydro Ottawa'):
     return dictionaryToJson(imageInfo)
 
 #Converts the input into a .json dump
+
 def dictionaryToJson(dic):
     json_data = json.dumps(dic)
     return json_data
 
 #Reads the config file and returns the list of values corresponding the selection
-def readConfig(selection, configFile = 'backend/config.cfg'):
+def readConfig(selection, configFile = 'config.cfg'):
     config = configparser.ConfigParser()
     config.read(configFile)
     items = config.items(selection)
     return items
+
+
+def addConfiguration(selection, configFile = 'config.cfg'):
+    # try:
+        config = configparser.ConfigParser(allow_no_value=True)
+        config.read_dict(selection)
+        with open(configFile, 'a') as configfile:
+            config.write(configfile)
+        return True
+    # except :
+    #     return False
+
+print (addConfiguration({'section1': {'key1': 'value1', 'key2': 'value2','key3': 'value3'}}))
