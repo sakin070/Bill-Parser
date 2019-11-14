@@ -16,17 +16,22 @@ def allowed_file(filename):
 
 @app.route('/add-selection', methods=['POST'])
 def addSelection():
-    if 'configuration' not in request.form:
-        resp = jsonify({'message' : 'No file part in the request'})
+    """
+                API for adding a new configuration selection to exiting selections
+                :param selectionDictionary: a dictionary of new selections
+                :return: True if addition successful false otherwise
+        """
+    if 'selectionDictionary' not in request.form:
+        resp = jsonify({'message': 'No selection dictionary the request'})
         resp.status_code = 400
         return resp
-    configuration = request.form.get('configuration')
-    if configuration == '':
-        resp = jsonify({'message': 'Missing configuration'})
+    selectionDictionary = request.form.get('selectionDictionary')
+    if selectionDictionary == '':
+        resp = jsonify({'message': 'Missing selection dictionary'})
         resp.status_code = 400
         return resp
-    resp = bt.addConfiguration(configuration)
-    if resp :
+    resp = bt.addConfiguration(selectionDictionary)
+    if resp:
         resp.status_code = 201
     else:
         resp.status_code = 400

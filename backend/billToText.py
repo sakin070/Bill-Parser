@@ -45,14 +45,29 @@ def readConfig(selection, configFile = 'config.cfg'):
     return items
 
 
-def addConfiguration(selection, configFile = 'config.cfg'):
-    # try:
+def addConfiguration(selectionDictionary, configFile = 'config.cfg'):
+    """
+            Add a new configuration selection to exiting selections
+
+            :param selectionDictionary: a dictionary of new selections
+            :param configFile: location of configuration file to be updated
+            :return: True if addition successful false otherwise
+    """
+    try:
+        selection = selectionDictionary.popitem()
+        existingConfig = configparser.ConfigParser(allow_no_value=True)
+        existingConfig.read(configFile)
+        if existingConfig.has_section(selection[0]):
+            raise configparser.DuplicateSectionError(selection[0])
         config = configparser.ConfigParser(allow_no_value=True)
-        config.read_dict(selection)
+        config.add_section(selection[0])
+        for option, value in selection[1].items():
+            config.set(selection[0], option, value)
         with open(configFile, 'a') as configfile:
             config.write(configfile)
         return True
-    # except :
-    #     return False
+    except Exception as e:
+        print(e)
+        return False
 
 print (addConfiguration({'section1': {'key1': 'value1', 'key2': 'value2','key3': 'value3'}}))
