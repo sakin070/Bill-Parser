@@ -80,9 +80,6 @@ class Rector extends React.Component {
 
         this.addMouseEvents()
     }
-    draw(){
-
-    }
 
     updateCanvas = () => {
         //this.draw()

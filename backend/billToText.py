@@ -54,7 +54,8 @@ def addConfiguration(selectionDictionary, configFile = 'config.cfg'):
             :return: True if addition successful false otherwise
     """
     try:
-        selection = selectionDictionary.popitem()
+        parsed_json = (json.loads(selectionDictionary))
+        selection = parsed_json.popitem()
         existingConfig = configparser.ConfigParser(allow_no_value=True)
         existingConfig.read(configFile)
         if existingConfig.has_section(selection[0]):
@@ -62,7 +63,7 @@ def addConfiguration(selectionDictionary, configFile = 'config.cfg'):
         config = configparser.ConfigParser(allow_no_value=True)
         config.add_section(selection[0])
         for option, value in selection[1].items():
-            config.set(selection[0], option, value)
+            config.set(selection[0], option, str(value))
         with open(configFile, 'a') as configfile:
             config.write(configfile)
         return True
@@ -70,4 +71,15 @@ def addConfiguration(selectionDictionary, configFile = 'config.cfg'):
         print(e)
         return False
 
-print (addConfiguration({'section1': {'key1': 'value1', 'key2': 'value2','key3': 'value3'}}))
+
+def getSelectionList(configFile='config.cfg'):
+    config = configparser.ConfigParser()
+    config.read(configFile)
+    return config.values()
+# vsl = {'section2': {'key1': 'value1', 'key2': 'value2','key3': 'value3'}}
+# # x = vsl.popitem()
+# # print(x)
+# # print(x[0])
+# # for x, y in x[1].items():
+# #   print(x, y)
+# print (addConfiguration(vsl))
