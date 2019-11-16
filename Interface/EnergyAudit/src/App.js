@@ -2,7 +2,7 @@ import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
 
-import config from "./Pages/config";
+import configView from "./Pages/ConfigView";
 import pictureConfig from "./Pages/PictureConfig";
 import Home from "./Pages/home";
 
@@ -20,7 +20,7 @@ function App() {
       </div>
       <Route path="/" exact component={Home} />
       <Route path="/picture" exact component={pictureConfig} />
-      <Route path="/configuration" exact component={config} />
+      <Route path="/configuration" exact component={configView} />
     </Router>
   );
 }

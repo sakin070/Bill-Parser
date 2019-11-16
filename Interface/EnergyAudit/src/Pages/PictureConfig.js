@@ -3,7 +3,6 @@ import SelectionCanvas from "./util/SelectionCanvas";
 import ConfigTable from "./util/ConfigTable";
 
 class PictureConfig extends React.Component{
-    inputValue = '';
     constructor(props){
         super(props);
         this.state = {
@@ -15,7 +14,10 @@ class PictureConfig extends React.Component{
     }
 
     addSelection = (rect) => {
-        this.setState({currentSelection: [ rect]})
+        if(rect["w"] > 6 && rect["h"]>6){
+            this.setState({currentSelection: [ rect]})
+        }
+
     };
 
     storeSelection = () =>{
@@ -27,6 +29,28 @@ class PictureConfig extends React.Component{
 
         }
 
+    };
+
+    rectToTupple(rect){
+        return [rect["x"],rect["y"],rect["w"],rect["h"]]
+    }
+    saveConfig = () =>{
+        let selections = {};
+        let i;
+        for (i = 0; i < this.state.selections.length; i++) {
+            selections[this.state.selections[i]["inputValue"]]  =  this.rectToTupple(this.state.selections[i]["currentSelection"]);
+        }
+        console.log(JSON.stringify(this.state.selections, null, 2));
+        console.log(JSON.stringify(selections, null, 2));
+        const data = new FormData();
+        data.append('selectionDictionary', JSON.stringify({ selections}).replace("selections",this.state.configurationIdentifier));
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://127.0.0.1:9999/add-selection', true);
+        xhr.onload = function () {
+            // do something to response
+            console.log(this.responseText);
+        };
+        xhr.send(data)
     };
 
     updateNameValue = (e) =>{
@@ -42,11 +66,11 @@ class PictureConfig extends React.Component{
         return(
             <div className="container">
                 <div className="row">
-                    <div className="col col-lg-9">
+                    <div className="col-lg-9">
                        <SelectionCanvas onSelect={this.addSelection}/>
-                        {/*{JSON.stringify(this.state, null, 2)}*/}
+                        {JSON.stringify(this.state, null, 2)}
                     </div>
-                    <div className="col col-lg-3">
+                    <div className="col-lg-3">
                         <label>
                             Configuration Identifier:
                             <input type="text" name="configID" onChange={this.updateConfigurationIdentifierValue}/>
@@ -81,7 +105,7 @@ class PictureConfig extends React.Component{
                         })
                         }
                         <br/>
-                        <button type="button" className="btn btn-success">Save Configuration</button>
+                        <button type="button" className="btn btn-success" onClick={this.saveConfig}>Save Configuration</button>
                        <ConfigTable/>
                     </div>
                 </div>
