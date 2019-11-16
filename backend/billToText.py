@@ -20,25 +20,27 @@ def pdfToImages(filePath, name='image'):
         pages[i].save(tempProcessingLocation+'/ '+name+str(i)+'.jpeg', 'JPEG')
 
 #Extracts the info from an image defined at a path using the config provided
-def extractInfo(imagePath, config='Hydro Ottawa'):
+def extractInfo(imagePath, config='Hydro Ottawa',configFile = 'config.cfg'):
     imageInfo = {}
     image = Image.open(imagePath)
-    items = readConfig(config)
-    #For each item in the config file, create the corresponding section in the picture using the parseConfigItems method
-    #Then use the Image-to-Text Tesserac function at the previously created section to find the value of the item from the config
+    items = readConfig(config,configFile)
+    # For each item in the config file, create the corresponding section in the picture using the parseConfigItems method
+    # Then use the Image-to-Text Tesserac function at the previously created section to find the value of the item from the config
     for item in items:
         imageSection = image.crop(parseConfigItems(item[1]))
         imageInfo[item[0]] = str(tesserocr.image_to_text(imageSection)).rstrip()
     return dictionaryToJson(imageInfo)
 
-#Converts the input into a .json dump
+
 
 def dictionaryToJson(dic):
+    # Converts the input into a .json dump
     json_data = json.dumps(dic)
     return json_data
 
-#Reads the config file and returns the list of values corresponding the selection
+
 def readConfig(selection, configFile = 'config.cfg'):
+    # Reads the config file and returns the list of values corresponding the selection
     config = configparser.ConfigParser()
     config.read(configFile)
     items = config.items(selection)
@@ -53,6 +55,7 @@ def addConfiguration(selectionDictionary, configFile = 'config.cfg'):
             :param configFile: location of configuration file to be updated
             :return: True if addition successful false otherwise
     """
+    # need to make this method thread safe
     try:
         parsed_json = (json.loads(selectionDictionary))
         selection = parsed_json.popitem()
@@ -73,9 +76,15 @@ def addConfiguration(selectionDictionary, configFile = 'config.cfg'):
 
 
 def getSelectionList(configFile='config.cfg'):
+    selectionMap = {}
     config = configparser.ConfigParser()
     config.read(configFile)
-    return config.values()
+    for selection in config.sections():
+        data = {}
+        for tp in config.items(selection):
+            data[tp[0]] = tp[1]
+        selectionMap[selection] = data
+    return selectionMap
 # vsl = {'section2': {'key1': 'value1', 'key2': 'value2','key3': 'value3'}}
 # # x = vsl.popitem()
 # # print(x)

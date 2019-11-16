@@ -14,7 +14,10 @@ class PictureConfig extends React.Component{
     }
 
     addSelection = (rect) => {
-        this.setState({currentSelection: [ rect]})
+        if(rect["w"] > 6 && rect["h"]>6){
+            this.setState({currentSelection: [ rect]})
+        }
+
     };
 
     storeSelection = () =>{
@@ -40,9 +43,7 @@ class PictureConfig extends React.Component{
         console.log(JSON.stringify(this.state.selections, null, 2));
         console.log(JSON.stringify(selections, null, 2));
         const data = new FormData();
-        var state;
         data.append('selectionDictionary', JSON.stringify({ selections}).replace("selections",this.state.configurationIdentifier));
-
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'http://127.0.0.1:9999/add-selection', true);
         xhr.onload = function () {
@@ -50,9 +51,6 @@ class PictureConfig extends React.Component{
             console.log(this.responseText);
         };
         xhr.send(data)
-        // xhr.send(JSON.stringify({
-        //     selectionDictionary: selections
-        // }));
     };
 
     updateNameValue = (e) =>{
@@ -68,11 +66,11 @@ class PictureConfig extends React.Component{
         return(
             <div className="container">
                 <div className="row">
-                    <div className="col col-lg-9">
+                    <div className="col-lg-9">
                        <SelectionCanvas onSelect={this.addSelection}/>
                         {JSON.stringify(this.state, null, 2)}
                     </div>
-                    <div className="col col-lg-3">
+                    <div className="col-lg-3">
                         <label>
                             Configuration Identifier:
                             <input type="text" name="configID" onChange={this.updateConfigurationIdentifierValue}/>

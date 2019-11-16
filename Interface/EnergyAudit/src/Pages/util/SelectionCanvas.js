@@ -38,7 +38,7 @@ class SelectionCanvas extends React.Component {
     render() {
         return (
             <div>
-                <Rector width="640" height="480"  onSelected={this.onSelected}/>
+                <Rector   onSelected={this.onSelected}/>
                 {/*<div>*/}
                 {/*    {this.getSelectionStr()}*/}
                 {/*</div>*/}
@@ -49,8 +49,8 @@ class SelectionCanvas extends React.Component {
 
 class Rector extends React.Component {
     static defaultProps = {
-        width: 320,
-        height: 200,
+        width: 855,
+        height: 900,
         strokeStyle: '#F00',
         lineWidth: 1,
         onSelected: () => {},
@@ -147,7 +147,7 @@ class Rector extends React.Component {
     };
 
     render() {
-        console.log('render');
+        console.log(this.props.width);
         return <canvas  width={this.props.width} height={this.props.height} ref={(c) => {this.canvas=c}}/>
     }
 }
