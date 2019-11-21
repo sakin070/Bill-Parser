@@ -20,25 +20,75 @@ def pdfToImages(filePath, name='image'):
         pages[i].save(tempProcessingLocation+'/ '+name+str(i)+'.jpeg', 'JPEG')
 
 #Extracts the info from an image defined at a path using the config provided
-def extractInfo(imagePath, config='Hydro Ottawa'):
+def extractInfo(imagePath, config='Hydro Ottawa',configFile = 'config.cfg'):
     imageInfo = {}
     image = Image.open(imagePath)
-    items = readConfig(config)
-    #For each item in the config file, create the corresponding section in the picture using the parseConfigItems method
-    #Then use the Image-to-Text Tesserac function at the previously created section to find the value of the item from the config
+    items = readConfig(config,configFile)
+    # For each item in the config file, create the corresponding section in the picture using the parseConfigItems method
+    # Then use the Image-to-Text Tesserac function at the previously created section to find the value of the item from the config
     for item in items:
         imageSection = image.crop(parseConfigItems(item[1]))
         imageInfo[item[0]] = str(tesserocr.image_to_text(imageSection)).rstrip()
     return dictionaryToJson(imageInfo)
 
-#Converts the input into a .json dump
+
+
 def dictionaryToJson(dic):
+    # Converts the input into a .json dump
     json_data = json.dumps(dic)
     return json_data
 
-#Reads the config file and returns the list of values corresponding the selection
-def readConfig(selection, configFile = 'backend/config.cfg'):
+
+def readConfig(selection, configFile = 'config.cfg'):
+    # Reads the config file and returns the list of values corresponding the selection
     config = configparser.ConfigParser()
     config.read(configFile)
     items = config.items(selection)
     return items
+
+
+def addConfiguration(selectionDictionary, configFile = 'config.cfg'):
+    """
+            Add a new configuration selection to exiting selections
+
+            :param selectionDictionary: a dictionary of new selections
+            :param configFile: location of configuration file to be updated
+            :return: True if addition successful false otherwise
+    """
+    # need to make this method thread safe
+    try:
+        parsed_json = (json.loads(selectionDictionary))
+        selection = parsed_json.popitem()
+        existingConfig = configparser.ConfigParser(allow_no_value=True)
+        existingConfig.read(configFile)
+        if existingConfig.has_section(selection[0]):
+            raise configparser.DuplicateSectionError(selection[0])
+        config = configparser.ConfigParser(allow_no_value=True)
+        config.add_section(selection[0])
+        for option, value in selection[1].items():
+            config.set(selection[0], option, str(value))
+        with open(configFile, 'a') as configfile:
+            config.write(configfile)
+        return True
+    except Exception as e:
+        print(e)
+        return False
+
+
+def getSelectionList(configFile='config.cfg'):
+    selectionMap = {}
+    config = configparser.ConfigParser()
+    config.read(configFile)
+    for selection in config.sections():
+        data = {}
+        for tp in config.items(selection):
+            data[tp[0]] = tp[1]
+        selectionMap[selection] = data
+    return selectionMap
+# vsl = {'section2': {'key1': 'value1', 'key2': 'value2','key3': 'value3'}}
+# # x = vsl.popitem()
+# # print(x)
+# # print(x[0])
+# # for x, y in x[1].items():
+# #   print(x, y)
+# print (addConfiguration(vsl))

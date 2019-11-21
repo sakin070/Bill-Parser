@@ -1,9 +1,13 @@
 import os
 from flask import Flask, jsonify, request
+from flask_cors import CORS, cross_origin
 from werkzeug.utils import secure_filename
 import billToText as bt
+import os
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 UPLOAD_FOLDER = "./imageOutputFolder"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
@@ -13,19 +17,63 @@ ALLOWED_EXTENSIONS = set(['pdf', 'png', 'jpg', 'jpeg'])
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+@app.route('/selectionList', methods=['GET'])
+@cross_origin()
+def selectionList():
+    """
+                    API for viewing list of available selection
+                    :return: List of available selections
+            """
+    resp = jsonify(bt.getSelectionList())
+    resp.status_code = 200
+    return resp
+
+
+@app.route('/add-selection', methods=['POST'])
+@cross_origin()
+def addSelection():
+    """
+                API for adding a new configuration selection to exiting selections
+                :param selectionDictionary: a dictionary of new selections
+                :return: True if addition successful false otherwise
+        """
+    if 'selectionDictionary' not in request.form:
+        resp = jsonify({'message': 'No selection dictionary the request'})
+        resp.status_code = 400
+        return resp
+    selectionDictionary = request.form.get('selectionDictionary')
+    if selectionDictionary == '':
+        resp = jsonify({'message': 'Missing selection dictionary'})
+        resp.status_code = 400
+        return resp
+    val = bt.addConfiguration(selectionDictionary)
+    resp = jsonify({'message': val})
+    if val:
+        resp.status_code = 201
+    else:
+        resp.status_code = 400
+    return resp
 
 @app.route('/parse-bill', methods=['POST'])
 def parseBill():
     #Check if the post request has the file part
-    if 'file' not in request.files or 'configuration' not in request.form:
+    if 'file' not in request.files:
         resp = jsonify({'message' : 'No file part in the request'})
+        resp.status_code = 400
+        return resp
+    if 'configuration' not in request.form:
+        resp = jsonify({'message': 'No configuration part in the request'})
         resp.status_code = 400
         return resp
     file = request.files['file']
     configuration = request.form.get('configuration')
     #Check for a name and configuration
-    if file.filename == '' or configuration == '':
-        resp = jsonify({'message' : 'No file selected for uploading or missing configuration'})
+    if file.filename == '':
+        resp = jsonify({'message' : 'No file selected for uploading '})
+        resp.status_code = 400
+        return resp
+    if configuration == '':
+        resp = jsonify({'message': 'Missing configuration'})
         resp.status_code = 400
         return resp
     #Check if file is a valid format
@@ -45,13 +93,24 @@ def parseBill():
 @app.route('/parse-multiple-bills', methods=['POST'])
 def parseBillMultipleBills():
     #Check if the post request has the file parts for one config
-    if 'files[]' not in request.files or 'configuration' not in request.form:
+    if 'files[]' not in request.files:
         resp = jsonify({'message': 'No file part in the request'})
         resp.status_code = 400
         return resp
-
+    if 'configuration' not in request.form:
+        resp = jsonify({'message': 'No configuration part in the request'})
+        resp.status_code = 400
+        return resp
     files = request.files.getlist('files[]')
     configuration = request.form.get('configuration')
+    if len(files) < 1:
+        resp = jsonify({'message': 'No file selected for uploading '})
+        resp.status_code = 400
+        return resp
+    if configuration == '':
+        resp = jsonify({'message': 'Missing configuration'})
+        resp.status_code = 400
+        return resp
     errors = {}
     results = []
     success = False
