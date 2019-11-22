@@ -1,6 +1,7 @@
 import React from "react";
 import SelectionCanvas from "./util/SelectionCanvas";
 import ConfigTable from "./util/ConfigTable";
+import './PictureConfig.css'
 class PictureConfig extends React.Component{
     constructor(props){
         super(props);
@@ -96,28 +97,40 @@ class PictureConfig extends React.Component{
     stuff(){
         if(this.state.files.length === 0 ){
             return (
-            <div>
-                <label htmlFor="files" className="ui primary button">Select Image</label>
-                <input id="files" style={{visibility:"hidden"}} type="file" accept="image/*" onChange={this.handleFileUpload}/>
-            </div>
+                <div className="ui text container">
+                    <h2 className="ui header">Create a new set of configuration selections</h2>
+                    <p> You only need to create a configuration if you have a lot of files to parse and the files share the
+                        same structure but different content. Otherwise you should try our direct parse
+                    </p>
+
+                    <br/>
+                    <p>
+                        To create a new configuration
+                        <ul>
+                            <li>First you have to upload an image to base the configuration off of</li>
+                            <li>For each section you will like to include in the configuration</li>
+                            <ul>
+                                <li>Drag across the section of the image</li>
+                                <li>Name the section</li>
+                                <li>Click the add field button </li>
+                            </ul>
+                            <li> Input the name you would like the configuration to be stored under</li>
+                            <li>Click the save configuration button</li>
+                            <li>Start by  selecting the the file to template</li>
+                                <label htmlFor="files" className="ui primary button">Select File</label>
+                                <input id="files" style={{visibility:"hidden"}} type="file" accept="image/*" onChange={this.handleFileUpload}/>
+                        </ul>
+                    </p>
+                </div>
             );
         }
         else
-            return ( <SelectionCanvas onSelect={this.addSelection} imgPath={this.state.imgPath} rectList={this.state.rectList}/>)
-    }
-
-    render() {
-        return(
-            <div className="container">
+            return (
                 <div className="row">
-                    {this.stuff()}
-
-
-
-                    {/*<button className="ui positive button" onChange={this.handleFileUpload}><input type="file" style={{visibility:'hidden'}}/>Positive Button</button>*/}
-                    {/*<input type="file"  className="ui small button" onChange={this.handleFileUpload} placeholder='Chose image'/>*/}
-
-                    <div className="col-lg-3">
+                    <div >
+                        <SelectionCanvas className="col lg-9" onSelect={this.addSelection} imgPath={this.state.imgPath} rectList={this.state.rectList}/>
+                    </div>
+                    <div className="col-lg-3" style={{marginLeft:'10px'}}>
                         <label>
                             Configuration Identifier:
                             <input type="text" className="form-control" name="configID" onChange={this.updateConfigurationIdentifierValue}/>
@@ -125,7 +138,7 @@ class PictureConfig extends React.Component{
                         {/*<h4>Selections</h4>*/}
                         {this.state.selections.map((d,key) => {
                             return <form id={key}>
-                                <div className="row">
+                                <div className="row" style={{marginBottom:'5px'}}>
                                     <div  className="col">
                                         <input type="text" className="form-control" placeholder="Field Name" value={d.inputValue}/>
                                     </div>
@@ -160,9 +173,17 @@ class PictureConfig extends React.Component{
                         }
                         <br/>
                         <button type="button" className="btn btn-success" onClick={this.saveConfig}>Save Configuration</button>
-                       <ConfigTable/>
+                        <ConfigTable/>
                     </div>
                 </div>
+            )
+    }
+
+    render() {
+        return(
+            <div className="pictureContainer">
+                {this.stuff()}
+
                 {JSON.stringify(this.state, null, 2)}
             </div>
 
