@@ -15,7 +15,7 @@ def parseConfigItems(tpl):
 
 #Converts PDFs to jpeg images
 def pdfToImages(filePath, name='image'):
-    pages = convert_from_path(filePath, 200, thread_count=3, output_folder=tempProcessingLocation)
+    pages = convert_from_path(filePath, 350, thread_count=3, output_folder=tempProcessingLocation)
     for i in range(pages.__len__()):
         pages[i].save(tempProcessingLocation+'/ '+name+str(i)+'.jpeg', 'JPEG')
 
@@ -76,6 +76,11 @@ def addConfiguration(selectionDictionary, configFile = 'config.cfg'):
 
 
 def getSelectionList(configFile='config.cfg'):
+    """
+                get the list of available selections
+                :param configFile: location of configuration file
+                :return: a dictionary of sections
+        """
     selectionMap = {}
     config = configparser.ConfigParser()
     config.read(configFile)
@@ -85,6 +90,20 @@ def getSelectionList(configFile='config.cfg'):
             data[tp[0]] = tp[1]
         selectionMap[selection] = data
     return selectionMap
+
+
+def processImage(imagePath):
+    """
+                pre process an image by removing its alpha and making sure its size is less than
+                (900,900)
+                :param imagePath: location of configuration file
+        """
+    maxsize = (900, 900)
+    image = Image.open(imagePath)
+    image.convert("RGB")
+    image.thumbnail(maxsize,Image.ANTIALIAS)
+    image.save(tempProcessingLocation+'/ '+imagePath+'.jpeg', 'JPEG')
+
 # vsl = {'section2': {'key1': 'value1', 'key2': 'value2','key3': 'value3'}}
 # # x = vsl.popitem()
 # # print(x)
