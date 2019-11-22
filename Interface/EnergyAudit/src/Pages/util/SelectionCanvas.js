@@ -38,7 +38,7 @@ class SelectionCanvas extends React.Component {
     render() {
         return (
             <div>
-                <Rector   onSelected={this.onSelected}/>
+                <Rector   onSelected={this.onSelected} imgPath={this.props.imgPath} rectList={this.props.rectList}/>
                 {/*<div>*/}
                 {/*    {this.getSelectionStr()}*/}
                 {/*</div>*/}
@@ -68,11 +68,12 @@ class Rector extends React.Component {
 
     constructor(props) {
         super(props);
+        console.log(props);
     }
 
     componentDidMount(props) {
         this.ctx = this.canvas.getContext('2d');
-        this.image.src = "testImg.png";
+        this.image.src = this.props.imgPath;
         this.image.addEventListener("load" , () => this.ctx.drawImage(this.image,0,0, this.props.width, this.props.height) , false);
         this.ctx.strokeStyle = this.props.strokeStyle;
         this.ctx.lineWidth = this.props.lineWidth;
@@ -102,6 +103,10 @@ class Rector extends React.Component {
             this.ctx.strokeRect(rect.x, rect.y, rect.w, rect.h)
         }
         this.isDirty = false;
+        for(let i=0; i<this.props.rectList.length; i++){
+            let rect = this.props.rectList[i];
+            this.ctx.strokeRect(rect["x"],rect["y"],rect["w"],rect["h"])
+        }
     };
 
     componentWillUnmount() {
