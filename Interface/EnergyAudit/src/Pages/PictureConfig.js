@@ -15,7 +15,6 @@ class PictureConfig extends React.Component{
             rectList:[]
         };
         this.handleFileUpload = this.handleFileUpload.bind(this);
-        this.removeSelection = this.removeSelection.bind(this);
     }
 
     addSelection = (rect) => {
@@ -63,11 +62,6 @@ class PictureConfig extends React.Component{
         this.setState ({inputValue:e.target.value,})
     };
 
-    removeSelection(key)  {
-
-
-    };
-
     updateConfigurationIdentifierValue = (e) =>{
         this.setState ({configurationIdentifier:e.target.value,})
     };
@@ -93,8 +87,7 @@ class PictureConfig extends React.Component{
         //     }.bind(this);
         // do the rest here
     }
-
-    stuff(){
+    viewDecider(){
         if(this.state.files.length === 0 ){
             return (
                 <div className="ui text container">
@@ -116,7 +109,7 @@ class PictureConfig extends React.Component{
                             </ul>
                             <li> Input the name you would like the configuration to be stored under</li>
                             <li>Click the save configuration button</li>
-                            <li>Start by  selecting the the file to template</li>
+                            <li>Start by  selecting the file to template</li>
                                 <label htmlFor="files" className="ui primary button">Select File</label>
                                 <input id="files" style={{visibility:"hidden"}} type="file" accept="image/*" onChange={this.handleFileUpload}/>
                         </ul>
@@ -182,7 +175,7 @@ class PictureConfig extends React.Component{
     render() {
         return(
             <div className="pictureContainer">
-                {this.stuff()}
+                {this.viewDecider()}
 
                 {JSON.stringify(this.state, null, 2)}
             </div>
