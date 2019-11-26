@@ -4,7 +4,7 @@ python:
 cache: pip
 before_install:
   - sudo apt-get update
-  - sudo apt-get -y install libleptonica-dev libtesseract-dev poppler tesseract-ocr
+  - sudo apt-get -y install libleptonica-dev libtesseract-dev libpoppler-cpp-dev tesseract-ocr
 install:
   - pip install -r requirements.txt
 script:
