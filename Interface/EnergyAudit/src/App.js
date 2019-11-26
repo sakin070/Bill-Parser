@@ -10,6 +10,9 @@ import Home from "./Pages/home";
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
+const responseGoogle = response => {
+  console.log(response);
+};
 class App extends Component {
   constructor(props) {
     super(props);
@@ -21,10 +24,15 @@ class App extends Component {
 
   componentDidMount() {}
 
+  onLogin = response => {
+    this.setState({ signedIn: true });
+    console.log(response);
+  };
+
   getLoginContent() {
     if (this.state.signedIn) {
       return (
-        <div>
+        <div class="googleButton">
           <p> Hello User </p>
           <GoogleLogout
             clientId="213435619629-ldq6g698eqigrtn9v1hapdet6u72647u.apps.googleusercontent.com"
@@ -37,14 +45,12 @@ class App extends Component {
       );
     } else {
       return (
-        <div>
+        <div class="googleButton">
           <p>You are not signed in. Click here to sign in.</p>
           <GoogleLogin
             clientId="213435619629-ldq6g698eqigrtn9v1hapdet6u72647u.apps.googleusercontent.com"
             buttonText="Login"
-            onSuccess={response => {
-              this.setState({ signedIn: true });
-            }}
+            onSuccess={this.onLogin}
             cookiePolicy={"single_host_origin"}
           />
         </div>
