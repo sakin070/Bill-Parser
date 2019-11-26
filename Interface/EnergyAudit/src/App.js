@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 
 import ConfigView from "./Pages/ConfigView";
@@ -7,7 +6,7 @@ import PictureConfig from "./Pages/PictureConfig";
 import DirectParse from "./Pages/DirectParse";
 import Home from "./Pages/home";
 
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 function App() {
   return (

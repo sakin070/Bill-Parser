@@ -25,7 +25,7 @@ class ConfigView extends React.Component{
 
 
   parseTuple(t) {
-    var items = t.replace(/^\(|\)$/g, "").split("),(");
+    var items = t.replace(/^\[|]$/g, "").split("),(");
     items.forEach(function(val, index, array) {
       array[index] = val.split(",").map(Number);
     });

@@ -2,9 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import SelectionCanvas from "./Pages/util/SelectionCanvas";
 import * as serviceWorker from "./serviceWorker";
-import PictureConfig from "./Pages/PictureConfig";
 
 ReactDOM.render(<App />, document.getElementById("root"));
 

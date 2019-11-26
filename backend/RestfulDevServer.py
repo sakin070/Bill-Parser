@@ -1,9 +1,11 @@
-import os
-from flask import Flask, jsonify, request
+import sys
+
+from flask import Flask, jsonify, request, send_from_directory, render_template, make_response, send_file
 from flask_cors import CORS, cross_origin
-from werkzeug.utils import secure_filename
 import billToText as bt
+import imageProcessing as iProcess
 import os
+import io
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -11,8 +13,40 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 UPLOAD_FOLDER = "./imageOutputFolder"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-ALLOWED_EXTENSIONS = set(['pdf', 'png', 'jpg', 'jpeg'])
+ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg'}
 
+
+@app.route('/get-file/<pdfname>/<filename>', methods=['GET'])
+@cross_origin()
+def getFile(pdfname, filename):
+    path = os.path.join(UPLOAD_FOLDER, pdfname)
+    app.logger.info(path)
+    app.logger.info(os.path.isfile(os.path.join(path, filename)))
+    return send_from_directory(path, filename, as_attachment=True, mimetype='image/jpeg')
+
+
+@app.route('/create-images', methods=['POST'])
+@cross_origin()
+def createImages():
+    if 'file' not in request.files:
+        resp = jsonify({'message': 'No file part in the request'})
+        resp.status_code = 400
+        return resp
+    file = request.files['file']
+    # Check for a name and configuration
+    if file.filename == '':
+        resp = jsonify({'message': 'No file selected for uploading '})
+        resp.status_code = 400
+        return resp
+    if file and allowed_file(file.filename):
+        paths = iProcess.handlePDF(file)
+        resp = jsonify(paths)
+        resp.status_code = 201
+        return resp
+    else:
+        resp = jsonify({'message' : 'Allowed file types are  pdf, png, jpg, jpeg,'})
+        resp.status_code = 400
+        return resp
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -78,9 +112,7 @@ def parseBill():
         return resp
     #Check if file is a valid format
     if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        location = UPLOAD_FOLDER+'/'+filename
+        location = iProcess.handleImage(file)
         resp = jsonify(bt.extractInfo(location, config=configuration))
         resp.status_code = 201
         return resp
@@ -118,10 +150,8 @@ def parseBillMultipleBills():
     #Check if files are a valid format
     for file in files:
         if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            location = iProcess.handleImage(file)
             success = True
-            location = UPLOAD_FOLDER + '/' + filename
             results.append(bt.extractInfo(location, config=configuration))
         else:
             errors[file.filename] = 'File type is not allowed'
@@ -138,6 +168,55 @@ def parseBillMultipleBills():
     else:
         resp = jsonify(errors)
         resp.status_code = 500
+        return resp
+
+@app.route('/direct-parse', methods=['POST'])
+@cross_origin()
+def directExtract():
+    if 'imagePath' not in request.files:
+        resp = jsonify({'message': 'No image path in the request'})
+        resp.status_code = 400
+        return resp
+    if 'imageSize' not in request.form:
+        resp = jsonify({'message': 'No imageSize in the request'})
+        resp.status_code = 400
+        return resp
+    if 'section' not in request.form:
+        resp = jsonify({'message': 'No section in the request'})
+        resp.status_code = 400
+        return resp
+    imagePath = request.files['imagePath']
+    imageSize = request.form.get('imageSize')
+    section = request.form.get('section')
+    if imagePath.filename == '':
+        resp = jsonify({'message': 'Missing imagePath'})
+        resp.status_code = 400
+        return resp
+
+    if imageSize == '':
+        resp = jsonify({'message': 'Missing imageSize'})
+        resp.status_code = 400
+        return resp
+
+    if section == '':
+        resp = jsonify({'message': 'Missing section'})
+        resp.status_code = 400
+        return resp
+    # Check if file is a valid format
+    if imagePath and allowed_file(imagePath.filename):
+        location = iProcess.handleImage(imagePath)
+        try:
+            resp = jsonify(bt.directExtract(location,imageSize,section))
+            resp.status_code = 201
+        except:
+            resp = jsonify({'message': 'internal error'})
+            resp.status_code = 500
+        finally:
+            os.remove(location)
+        return resp
+    else:
+        resp = jsonify({'message': 'Allowed file types are  pdf, png, jpg, jpeg,'})
+        resp.status_code = 400
         return resp
 
 

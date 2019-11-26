@@ -55,7 +55,7 @@ class DirectParse extends React.Component{
             xhr.onload = function () {
             };
             xhr.send(data);
-            str = str.concat(this.state.inputList[i],': ',eval(xhr.responseText)+"\n");
+            str = str.concat(this.state.inputList[i],": ",eval(xhr.responseText)+"\n");
         }
         this.setState({parsedText: str})
     };
@@ -63,11 +63,48 @@ class DirectParse extends React.Component{
         this.setState ({configurationIdentifier:e.target.value,})
     };
 
-    handleFileUpload(e) {
-        let file = e.target.files[0]; // this is the file you want
-        this.setState( oldState => ({files: oldState.files.concat(file)}));
-        this.setState({imgPath:window.URL.createObjectURL(file)});
+    async handleFileUpload(e) {
+
+        if (e.target.files[0].type === 'application/pdf') {
+            const data = new FormData();
+            data.append('file', e.target.files[0]);
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://127.0.0.1:9999/create-images', false);
+            xhr.onload = function () {
+            };
+            xhr.send(data);
+            let lst = JSON.parse(xhr.responseText);
+            console.log(lst);
+            const path = e.target.files[0].name.slice(0, -4);
+            let i = 0;
+            while (i < lst.length) {
+                const myHeaders = new Headers();
+
+                const myInit = {
+                    method: 'GET',
+                    headers: myHeaders,
+                    mode: 'cors',
+                    cache: 'default'
+                };
+                const myRequest = new Request('http://127.0.0.1:9999/get-file/'.concat(path, '/', lst[i]), myInit);
+                const response = await fetch(myRequest);
+                const myBlob = await response.blob();
+                const objectURL = window.URL.createObjectURL(myBlob);
+                this.setState({imgPath: objectURL});
+                console.log(objectURL);
+                console.log(this.state);
+                const file = new File([myBlob], lst[i]);
+                this.setState(oldState => ({files: oldState.files.concat(file)}));
+                i++
+            }
+        } else {
+            let file = e.target.files[0]; // this is the file you want
+            this.setState(oldState => ({files: oldState.files.concat(file)}));
+            console.log(window.URL.createObjectURL(file));
+            this.setState({imgPath: window.URL.createObjectURL(file)});
+        }
     }
+
     viewDecider(){
         if(this.state.files.length === 0 ){
             return (
@@ -90,7 +127,7 @@ class DirectParse extends React.Component{
                             <li>Watch the text come out of the image</li>
                             <li>Start by  selecting the image</li>
                             <label htmlFor="files" className="ui primary button">Select File</label>
-                            <input id="files" style={{visibility:"hidden"}} type="file" accept="image/jpg, image/jpeg" onChange={this.handleFileUpload}/>
+                            <input id="files" style={{visibility:"hidden"}} type="file" accept="image/*, application/pdf" onChange={this.handleFileUpload}/>
                         </ul>
                     </p>
                 </div>

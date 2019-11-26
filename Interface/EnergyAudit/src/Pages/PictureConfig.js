@@ -2,6 +2,7 @@ import React from "react";
 import SelectionCanvas from "./util/SelectionCanvas";
 import ConfigTable from "./util/ConfigTable";
 import './PictureConfig.css'
+import {useHistory} from "react-router-dom";
 class PictureConfig extends React.Component{
     constructor(props){
         super(props);
@@ -45,8 +46,6 @@ class PictureConfig extends React.Component{
         for (i = 0; i < this.state.selections.length; i++) {
             selections[this.state.selections[i]["inputValue"]]  =  this.rectToTupple(this.state.selections[i]["currentSelection"])
         }
-        console.log(JSON.stringify(this.state.selections, null, 2));
-        console.log(JSON.stringify(selections, null, 2));
         const data = new FormData();
         data.append('selectionDictionary', JSON.stringify({ selections}).replace("selections",this.state.configurationIdentifier));
         const xhr = new XMLHttpRequest();
@@ -55,7 +54,7 @@ class PictureConfig extends React.Component{
             // do something to response
             console.log(this.responseText);
         };
-        xhr.send(data)
+        xhr.send(data);
     };
 
     updateNameValue = (e) =>{
@@ -165,7 +164,7 @@ class PictureConfig extends React.Component{
                         })
                         }
                         <br/>
-                        <button type="button" className="btn btn-success" onClick={this.saveConfig}>Save Configuration</button>
+                        <button type="button" className="btn btn-success" onClick={this.saveConfig} >Save Configuration</button>
                         <ConfigTable/>
                     </div>
                 </div>
@@ -176,8 +175,6 @@ class PictureConfig extends React.Component{
         return(
             <div className="pictureContainer">
                 {this.viewDecider()}
-
-                {JSON.stringify(this.state, null, 2)}
             </div>
 
         )
