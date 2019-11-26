@@ -41,6 +41,10 @@ nav h3 {
     "sans-serif";
 }
 
+.googleButton {
+  float: right;
+}
+
 .mainContainer {
   text-align: center;
   padding: 10rem 0rem 10rem;

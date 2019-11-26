@@ -33,7 +33,6 @@ class App extends Component {
     if (this.state.signedIn) {
       return (
         <div class="googleButton">
-          <p> Hello User </p>
           <GoogleLogout
             clientId="213435619629-ldq6g698eqigrtn9v1hapdet6u72647u.apps.googleusercontent.com"
             buttonText="Logout"
@@ -46,7 +45,6 @@ class App extends Component {
     } else {
       return (
         <div class="googleButton">
-          <p>You are not signed in. Click here to sign in.</p>
           <GoogleLogin
             clientId="213435619629-ldq6g698eqigrtn9v1hapdet6u72647u.apps.googleusercontent.com"
             buttonText="Login"
