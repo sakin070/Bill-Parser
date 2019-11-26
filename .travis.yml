@@ -4,9 +4,8 @@ python:
 cache: pip
 before_install:
   - sudo apt-get update
-  - sudo apt-get -y install libleptonica-dev libtesseract-dev tesseract-ocr
+  - sudo apt-get -y install libleptonica-dev libtesseract-dev poppler tesseract-ocr
 install:
   - pip install -r requirements.txt
-  - pip install pdf2image
 script:
   - pytest --cov-report term-missing --cov billToText -v
