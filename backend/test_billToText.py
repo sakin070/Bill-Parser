@@ -29,7 +29,7 @@ class TestBillToTextMethods(unittest.TestCase):
     def testPdfConvert(self):
         if os.path.exists("backend/resources/image.jpg"):
             os.remove("backend/resources/image.jpg")
-        bt.pdfToImages("backend/resources/testPDFOttawa.pdf")
+        bt.pdfToImages("backend/resources/TestPDFOttawa.pdf")
         self.assertTrue(os.path.exists("backend/resources/image.jpg"))
 
 if __name__ == '__main__':
