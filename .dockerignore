@@ -1,0 +1,4 @@
+.git
+.pytest_cache
+Interface/EnergyAudit/node_modules
+build
