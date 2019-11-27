@@ -2,6 +2,11 @@ import os
 from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 from werkzeug.utils import secure_filename
+
+""" ADDED: THIS NEEDS TO BE INSTALLED """"
+from google.oauth2 import id_token
+from google.auth.transport import requests
+
 import billToText as bt
 import os
 
@@ -16,6 +21,36 @@ ALLOWED_EXTENSIONS = set(['pdf', 'png', 'jpg', 'jpeg'])
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/login', methods=['POST'])
+def login():
+    """
+                API for checking if the user's token
+                is a valid Google token
+                :param idToken: token from client side
+                :return" True if valid login, false otherwise
+        """
+    if 'idToken' not in request.form:
+        resp = jsonify({'message': 'No token in the request'})
+        resp.status_code = 400
+        return resp
+    idToken = request.form.get('idToken')
+    if idToken == '':
+        resp = jsonify({'message': 'Missing token'})
+        resp.status_code = 400
+        return resp
+    # Specify the CLIENT_ID of the app that accesses the backend:
+    idInfo = id_token.verify_oauth2_token(idToken, requests.Request(), "213435619629-ldq6g698eqigrtn9v1hapdet6u72647u.apps.googleusercontent.com")
+    # Check iss claim
+    if idInfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
+        resp.status_code = 400
+    else:
+        resp.status_code = 201
+    # If token valid, set Google Account ID
+    userid = idInfo['sub']
+    return resp
+
+
 
 @app.route('/selectionList', methods=['GET'])
 @cross_origin()
