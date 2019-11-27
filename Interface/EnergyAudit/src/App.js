@@ -10,13 +10,13 @@ import Home from "./Pages/home";
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
-const responseGoogle = response => {
-  console.log(response);
+const responseGoogle = googleUser => {
+  console.log(googleUser);
+  console.log(googleUser.Zi.id_token);
 };
 class App extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       signedIn: false
     };
@@ -24,9 +24,10 @@ class App extends Component {
 
   componentDidMount() {}
 
-  onLogin = response => {
+  onLogin = googleUser => {
     this.setState({ signedIn: true });
-    console.log(response);
+    //Set the Google Login Token
+    localStorage.setItem("test", googleUser.getAuthResponse().id_token);
   };
 
   getLoginContent() {
