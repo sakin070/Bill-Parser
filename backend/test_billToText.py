@@ -1,5 +1,6 @@
 import unittest
 import billToText as bt
+import os
 
 class TestBillToTextMethods(unittest.TestCase):
 

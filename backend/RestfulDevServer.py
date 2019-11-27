@@ -1,5 +1,7 @@
 import os
 from flask import Flask, jsonify, request
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from flask_cors import CORS, cross_origin
 from werkzeug.utils import secure_filename
 import billToText as bt
@@ -12,7 +14,10 @@ UPLOAD_FOLDER = "./imageOutputFolder"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 ALLOWED_EXTENSIONS = set(['pdf', 'png', 'jpg', 'jpeg'])
-
+limiter = Limiter(
+    app,
+    key_func=get_remote_address,
+    default_limits=["200 per day","50 per hour"]
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -55,6 +60,7 @@ def addSelection():
     return resp
 
 @app.route('/parse-bill', methods=['POST'])
+@limiter.limit("100 per day")
 def parseBill():
     #Check if the post request has the file part
     if 'file' not in request.files:
@@ -91,6 +97,7 @@ def parseBill():
 
 
 @app.route('/parse-multiple-bills', methods=['POST'])
+@limiter.limit("100 per day")
 def parseBillMultipleBills():
     #Check if the post request has the file parts for one config
     if 'files[]' not in request.files:
