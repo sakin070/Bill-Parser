@@ -7,6 +7,8 @@ RUN apt-get update \
     tesseract-ocr \
     python3-pip \
     pkg-config \
+    build-dep \
+    imagemagick \
     && apt-get clean \
     && apt-get autoremove
 
