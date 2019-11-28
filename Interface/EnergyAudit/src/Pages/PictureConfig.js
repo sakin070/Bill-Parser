@@ -2,6 +2,7 @@ import React from "react";
 import SelectionCanvas from "./util/SelectionCanvas";
 import ConfigTable from "./util/ConfigTable";
 import './PictureConfig.css'
+import {useHistory} from "react-router-dom";
 class PictureConfig extends React.Component{
     constructor(props){
         super(props);
@@ -15,7 +16,6 @@ class PictureConfig extends React.Component{
             rectList:[]
         };
         this.handleFileUpload = this.handleFileUpload.bind(this);
-        this.removeSelection = this.removeSelection.bind(this);
     }
 
     addSelection = (rect) => {
@@ -46,8 +46,6 @@ class PictureConfig extends React.Component{
         for (i = 0; i < this.state.selections.length; i++) {
             selections[this.state.selections[i]["inputValue"]]  =  this.rectToTupple(this.state.selections[i]["currentSelection"])
         }
-        console.log(JSON.stringify(this.state.selections, null, 2));
-        console.log(JSON.stringify(selections, null, 2));
         const data = new FormData();
         data.append('selectionDictionary', JSON.stringify({ selections}).replace("selections",this.state.configurationIdentifier));
         const xhr = new XMLHttpRequest();
@@ -56,16 +54,11 @@ class PictureConfig extends React.Component{
             // do something to response
             console.log(this.responseText);
         };
-        xhr.send(data)
+        xhr.send(data);
     };
 
     updateNameValue = (e) =>{
         this.setState ({inputValue:e.target.value,})
-    };
-
-    removeSelection(key)  {
-
-
     };
 
     updateConfigurationIdentifierValue = (e) =>{
@@ -93,8 +86,7 @@ class PictureConfig extends React.Component{
         //     }.bind(this);
         // do the rest here
     }
-
-    stuff(){
+    viewDecider(){
         if(this.state.files.length === 0 ){
             return (
                 <div className="ui text container">
@@ -116,7 +108,7 @@ class PictureConfig extends React.Component{
                             </ul>
                             <li> Input the name you would like the configuration to be stored under</li>
                             <li>Click the save configuration button</li>
-                            <li>Start by  selecting the the file to template</li>
+                            <li>Start by  selecting the file to template</li>
                                 <label htmlFor="files" className="ui primary button">Select File</label>
                                 <input id="files" style={{visibility:"hidden"}} type="file" accept="image/*" onChange={this.handleFileUpload}/>
                         </ul>
@@ -172,7 +164,7 @@ class PictureConfig extends React.Component{
                         })
                         }
                         <br/>
-                        <button type="button" className="btn btn-success" onClick={this.saveConfig}>Save Configuration</button>
+                        <button type="button" className="btn btn-success" onClick={this.saveConfig} >Save Configuration</button>
                         <ConfigTable/>
                     </div>
                 </div>
@@ -182,9 +174,7 @@ class PictureConfig extends React.Component{
     render() {
         return(
             <div className="pictureContainer">
-                {this.stuff()}
-
-                {JSON.stringify(this.state, null, 2)}
+                {this.viewDecider()}
             </div>
 
         )

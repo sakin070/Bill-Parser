@@ -2,7 +2,6 @@ import React from "react";
 import "../App.css";
 
 import { Link } from "react-router-dom";
-import { Button } from "semantic-ui-react";
 import Logo from "./resources/imageToJSON.png";
 
 function home() {
@@ -22,12 +21,24 @@ function home() {
           configurations.
         </p>
         <div className="configButton">
-          <Link to="/picture">
+          <Link to="/configuration">
             <button class="ui icon right labeled button">
               <i aria-hidden="true" class="right arrow icon"></i>
-              Next
+              Create a configuration
             </button>
           </Link>
+            <Link to="/picture">
+                <button class="ui icon right labeled button">
+                    <i aria-hidden="true" class="right arrow icon"></i>
+                    View available Configurations
+                </button>
+            </Link>
+            <Link to="/direct">
+                <button class="ui icon right labeled button">
+                    <i aria-hidden="true" class="right arrow icon"></i>
+                    Parse a file directly
+                </button>
+            </Link>
         </div>
       </div>
     </div>

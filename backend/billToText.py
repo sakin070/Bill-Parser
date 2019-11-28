@@ -4,13 +4,14 @@ import json
 import configparser
 from pdf2image import convert_from_path
 
-tempProcessingLocation = "./imageOutputFolder"
 
 #Splits the coordinates in the config file into an array of floats
 def parseConfigItems(tpl):
     tpl = tpl[1:-1]
     lst = tpl.split(', ')
     lst = [float(i) for i in lst]
+    lst[2] = lst[0]+lst[2]
+    lst[3] = lst[1]+lst[3]
     return lst
 
 #Converts PDFs to jpeg images
@@ -23,6 +24,7 @@ def pdfToImages(filePath, name='image'):
 def extractInfo(imagePath, config='Hydro Ottawa',configFile = 'config.cfg'):
     imageInfo = {}
     image = Image.open(imagePath)
+    image = image.resize((855, 900), Image.LANCZOS)
     items = readConfig(config,configFile)
     # For each item in the config file, create the corresponding section in the picture using the parseConfigItems method
     # Then use the Image-to-Text Tesserac function at the previously created section to find the value of the item from the config
@@ -32,6 +34,22 @@ def extractInfo(imagePath, config='Hydro Ottawa',configFile = 'config.cfg'):
     return dictionaryToJson(imageInfo)
 
 
+def directExtract(imagePath, size, section):
+    """
+            Extract the text of  in the specified section of the image with path imagePath
+
+            :param imagePath: location of the image
+            :param size: the size the image was rendered during the section
+            :param section: the location of the text in the image
+            :return: The extracted text
+    """
+    image = Image.open(imagePath)
+    sizeList = tuple(map(int, size.split(',')))
+    temp = image.resize(sizeList,Image.LANCZOS)
+    sectionX = json.loads(section)
+    rect = (sectionX['x'],sectionX['y'],sectionX['x']+sectionX['w'],sectionX['y']+sectionX['h'])
+    imageSection = temp.crop(rect)
+    return str(tesserocr.image_to_text(imageSection)).rstrip()
 
 def dictionaryToJson(dic):
     # Converts the input into a .json dump
@@ -57,7 +75,7 @@ def addConfiguration(selectionDictionary, configFile = 'config.cfg'):
     """
     # need to make this method thread safe
     try:
-        parsed_json = (json.loads(selectionDictionary))
+        parsed_json = json.loads(selectionDictionary)
         selection = parsed_json.popitem()
         existingConfig = configparser.ConfigParser(allow_no_value=True)
         existingConfig.read(configFile)
@@ -103,11 +121,3 @@ def processImage(imagePath):
     image.convert("RGB")
     image.thumbnail(maxsize,Image.ANTIALIAS)
     image.save(tempProcessingLocation+'/ '+imagePath+'.jpeg', 'JPEG')
-
-# vsl = {'section2': {'key1': 'value1', 'key2': 'value2','key3': 'value3'}}
-# # x = vsl.popitem()
-# # print(x)
-# # print(x[0])
-# # for x, y in x[1].items():
-# #   print(x, y)
-# print (addConfiguration(vsl))

@@ -1,12 +1,12 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 
-import configView from "./Pages/ConfigView";
-import pictureConfig from "./Pages/PictureConfig";
+import ConfigView from "./Pages/ConfigView";
+import PictureConfig from "./Pages/PictureConfig";
+import DirectParse from "./Pages/DirectParse";
 import Home from "./Pages/home";
 
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 function App() {
   return (
@@ -19,8 +19,9 @@ function App() {
         </nav>
       </div>
       <Route path="/" exact component={Home} />
-      <Route path="/picture" exact component={pictureConfig} />
-      <Route path="/configuration" exact component={configView} />
+      <Route path="/picture" exact component={ConfigView} />
+      <Route path="/configuration" exact component={PictureConfig} />
+      <Route path="/direct" exact component={DirectParse} />
     </Router>
   );
 }
