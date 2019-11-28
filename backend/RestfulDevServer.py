@@ -1,11 +1,13 @@
 import sys
-
+import os
+import io
 from flask import Flask, jsonify, request, send_from_directory, render_template, make_response, send_file
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from flask_cors import CORS, cross_origin
 import billToText as bt
 import imageProcessing as iProcess
-import os
-import io
+
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -15,6 +17,11 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg'}
 
+limiter = Limiter(
+    app,
+    key_func=get_remote_address,
+    default_limits=["200 per day","50 per hour"]
+)
 
 @app.route('/get-file/<pdfname>/<filename>', methods=['GET'])
 @cross_origin()
@@ -22,9 +29,8 @@ def getFile(pdfname, filename):
     path = os.path.join(UPLOAD_FOLDER, pdfname)
     app.logger.info(path)
     app.logger.info(os.path.isfile(os.path.join(path, filename)))
-    return send_from_directory(path, filename, as_attachment=True, mimetype='image/jpeg')
-
-
+    return send_from_directory(path, filename, as_attachment=True, mimetype='image/jpeg') 
+  
 @app.route('/create-images', methods=['POST'])
 @cross_origin()
 def createImages():
@@ -89,6 +95,7 @@ def addSelection():
     return resp
 
 @app.route('/parse-bill', methods=['POST'])
+@limiter.limit("100 per day")
 def parseBill():
     #Check if the post request has the file part
     if 'file' not in request.files:
@@ -123,6 +130,7 @@ def parseBill():
 
 
 @app.route('/parse-multiple-bills', methods=['POST'])
+@limiter.limit("100 per day")
 def parseBillMultipleBills():
     #Check if the post request has the file parts for one config
     if 'files[]' not in request.files:
