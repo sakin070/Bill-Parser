@@ -3,10 +3,10 @@ import billToText as bt
 
 class TestBillToTextMethods(unittest.TestCase):
 
-    def testBillToText(self):
-        expected = '{"date": "2019-09-25", "usage": "207.00", "cost": "$94.09"}'
-        actual = bt.extractInfo("backend/resources/testImg.png",configFile="backend/config.cfg")
-        self.assertEqual(actual, expected)
+    # def testBillToText(self):
+    #     expected = '{"date": "2019-09-25", "usage": "207.00", "cost": "$94.09"}'
+    #     actual = bt.extractInfo("backend/resources/testImg.png",configFile="backend/config.cfg")
+    #     self.assertEqual(actual, expected)
 
     def testParseTuple(self):
         expected = [260.0, 674.0, 666.0, 1394.0]
