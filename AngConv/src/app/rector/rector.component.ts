@@ -21,7 +21,7 @@ export class RectorComponent implements OnInit {
   @ViewChild("canvas", { static: true }) canvas: ElementRef;
   @Input() width = 720;
   @Input() height = 1280;
-  @Input() strokeStyle = '#F00';
+  @Input() strokeStyle = "#F00";
   @Input() lineWidth = 1;
   @Input() onSelected: {};
 
@@ -67,6 +67,8 @@ export class RectorComponent implements OnInit {
     for (let i = 0; i < this.rectList.length; i++) {
       const rect = this.rectList[i];
       this.ctx.strokeRect(rect["x"], rect["y"], rect["w"], rect["h"]);
+      console.log("hi?");
+      console.log(rect);
     }
   };
 
@@ -109,5 +111,6 @@ export class RectorComponent implements OnInit {
       h: Math.abs(e.offsetY - this.startY)
     };
     this.onSelected = rect;
+    console.log(this.rectList);
   };
 }
