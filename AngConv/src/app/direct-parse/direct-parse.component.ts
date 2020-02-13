@@ -7,12 +7,46 @@ import { Component, OnInit } from "@angular/core";
 export class DirectParseComponent implements OnInit {
   constructor() {}
 
+  /** find which are inputs */
   files = [];
+  selections;
+  selection = [];
+  imgPath = "";
+  rectList = [];
+
   ngOnInit() {
     const xhr = new XMLHttpRequest();
     xhr.open("GET", "http://127.0.0.1:9999/selectionList", false);
     xhr.onload = function() {};
     xhr.send();
+    selections = JSON.parse(xhr.responseText);
+    /** Need to change file handler */
+    this.handleFileUpload = this.handleFileUpload.bind(this);
+  }
+
+  parseTuple(t) {
+    const items = t.replace(/^\[|]$/g, "").split("),(");
+    items.forEach(function(val, index, array) {
+      array[index] = val.split(",").map(Number);
+    });
+    return items;
+  }
+
+  updateCanvas = rectList => {
+    let i;
+    let array = [];
+    for (i = 0; i < rectList.length; i++) {
+      let rect = this.parseTuple(rectList[i])[0];
+      array = array.concat({ x: rect[0], y: rect[1], w: rect[2], h: rect[3] });
+    }
+    this.rectList = array;
+  };
+
+  handleFileUpload(e) {
+    let file = e.target.files[0]; // this is the file you want
+    //Needs to be ported
+    //this.setState(oldState => ({ files: oldState.files.concat(file) }));
+    this.imgPath = window.URL.createObjectURL(file);
   }
 
   viewDecider() {
