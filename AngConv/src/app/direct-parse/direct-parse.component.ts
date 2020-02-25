@@ -19,7 +19,7 @@ export class DirectParseComponent implements OnInit {
     xhr.open("GET", "http://127.0.0.1:9999/selectionList", false);
     xhr.onload = function() {};
     xhr.send();
-    selections = JSON.parse(xhr.responseText);
+    this.selections = JSON.parse(xhr.responseText);
     /** Need to change file handler */
     this.handleFileUpload = this.handleFileUpload.bind(this);
   }

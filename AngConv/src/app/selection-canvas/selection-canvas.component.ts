@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 
+// <SelectionCanvas className="col-lg-9" onSelect={this.addSelection} imgPath={this.state.imgPath} rectList={this.state.rectList}/>
+
 @Component({
   selector: "app-selection-canvas",
   templateUrl: "./selection-canvas.component.html",
@@ -11,6 +13,7 @@ export class SelectionCanvasComponent implements OnInit {
   y: -1;
   w: -1;
   h: -1;
+  state;
 
   constructor() {
     this.onSelected = this.onSelected.bind(this);
@@ -26,7 +29,7 @@ export class SelectionCanvasComponent implements OnInit {
     this.w = rect.w;
     this.h = rect.h;
 
-    this.onSelect(rect);
+    //this.onSelect(rect);
   }
 
   getSelectionStr() {

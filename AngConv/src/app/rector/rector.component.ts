@@ -1,6 +1,13 @@
 // tslint:disable-next-line: quotemark
-import { Component, OnInit, Input } from "@angular/core";
-import { ViewChild, ElementRef } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+  ElementRef
+} from "@angular/core";
 
 @Component({
   selector: "rector",
@@ -25,9 +32,15 @@ export class RectorComponent implements OnInit {
   @Input() lineWidth = 1;
   @Input() onSelected: {};
 
+  @Output() rectListEvent = new EventEmitter<any[]>();
+
   constructor() {
     this.imagePath = "../../assets/test.png";
     this.rectList = [];
+  }
+
+  sendRectList() {
+    this.rectListEvent.emit(this.rectList);
   }
 
   ngOnInit() {
@@ -51,7 +64,6 @@ export class RectorComponent implements OnInit {
     if (!this.isDirty) {
       return;
     }
-
     this.ctx.clearRect(0, 0, this.width, this.height);
     this.ctx.drawImage(this.image, 0, 0, this.width, this.height);
     if (this.isDrag) {
@@ -111,6 +123,8 @@ export class RectorComponent implements OnInit {
       h: Math.abs(e.offsetY - this.startY)
     };
     this.onSelected = rect;
+    this.rectList[this.rectList.length] = rect;
+    this.sendRectList();
     console.log(this.rectList);
   };
 }
