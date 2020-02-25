@@ -32,15 +32,18 @@ export class RectorComponent implements OnInit {
   @Input() lineWidth = 1;
   @Input() onSelected: {};
 
-  @Output() rectListEvent = new EventEmitter<any[]>();
+  @Output() rectListEvent = new EventEmitter<{ rectList; onSelected }>();
 
   constructor() {
     this.imagePath = "../../assets/test.png";
     this.rectList = [];
   }
 
-  sendRectList() {
-    this.rectListEvent.emit(this.rectList);
+  sendToParent() {
+    this.rectListEvent.emit({
+      rectList: this.rectList,
+      onSelected: this.onSelected
+    });
   }
 
   ngOnInit() {
@@ -79,8 +82,6 @@ export class RectorComponent implements OnInit {
     for (let i = 0; i < this.rectList.length; i++) {
       const rect = this.rectList[i];
       this.ctx.strokeRect(rect["x"], rect["y"], rect["w"], rect["h"]);
-      console.log("hi?");
-      console.log(rect);
     }
   };
 
@@ -124,7 +125,6 @@ export class RectorComponent implements OnInit {
     };
     this.onSelected = rect;
     this.rectList[this.rectList.length] = rect;
-    this.sendRectList();
-    console.log(this.rectList);
+    this.sendToParent();
   };
 }

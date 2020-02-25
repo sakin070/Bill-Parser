@@ -3,7 +3,7 @@ import { Component, OnInit } from "@angular/core";
 // <SelectionCanvas className="col-lg-9" onSelect={this.addSelection} imgPath={this.state.imgPath} rectList={this.state.rectList}/>
 
 @Component({
-  selector: "app-selection-canvas",
+  selector: "selection-canvas",
   templateUrl: "./selection-canvas.component.html",
   styleUrls: ["./selection-canvas.component.css"]
 })
@@ -13,10 +13,16 @@ export class SelectionCanvasComponent implements OnInit {
   y: -1;
   w: -1;
   h: -1;
-  state;
+  state = "hi";
+  rectList;
 
   constructor() {
     this.onSelected = this.onSelected.bind(this);
+  }
+
+  receiveFromChild($event) {
+    this.rectList = $event.rectList;
+    this.onSelected = $event.onSelected;
   }
 
   onSelected(rect) {

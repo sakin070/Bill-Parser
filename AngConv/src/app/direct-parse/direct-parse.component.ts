@@ -24,6 +24,7 @@ export class DirectParseComponent implements OnInit {
     this.handleFileUpload = this.handleFileUpload.bind(this);
   }
 
+
   parseTuple(t) {
     const items = t.replace(/^\[|]$/g, "").split("),(");
     items.forEach(function(val, index, array) {
