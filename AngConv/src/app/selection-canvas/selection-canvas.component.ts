@@ -5,7 +5,7 @@ import { Component, OnInit } from "@angular/core";
 @Component({
   selector: "selection-canvas",
   templateUrl: "./selection-canvas.component.html",
-  styleUrls: ["./selection-canvas.component.css"]
+  styleUrls: ["./selection-canvas.component.scss"]
 })
 export class SelectionCanvasComponent implements OnInit {
   selected = false;

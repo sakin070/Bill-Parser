@@ -23,7 +23,6 @@ export class RectorComponent implements OnInit {
   curY = -1;
   image = new Image();
   imagePath = String();
-  rectList = [];
 
   @ViewChild("canvas", { static: true }) canvas: ElementRef;
   @Input() width = 720;
@@ -31,19 +30,16 @@ export class RectorComponent implements OnInit {
   @Input() strokeStyle = "#F00";
   @Input() lineWidth = 1;
   @Input() onSelected: {};
+  @Input() rectList = [];
 
-  @Output() rectListEvent = new EventEmitter<{ rectList; onSelected }>();
+  @Output() rectListEvent = new EventEmitter<any>();
 
   constructor() {
     this.imagePath = "../../assets/test.png";
-    this.rectList = [];
   }
 
   sendToParent() {
-    this.rectListEvent.emit({
-      rectList: this.rectList,
-      onSelected: this.onSelected
-    });
+    this.rectListEvent.emit(this.onSelected);
   }
 
   ngOnInit() {
@@ -116,7 +112,6 @@ export class RectorComponent implements OnInit {
   onMouseUp = e => {
     this.isDrag = false;
     this.isDirty = true;
-
     const rect = {
       x: Math.min(this.startX, this.curX),
       y: Math.min(this.startY, this.curY),
@@ -124,7 +119,6 @@ export class RectorComponent implements OnInit {
       h: Math.abs(e.offsetY - this.startY)
     };
     this.onSelected = rect;
-    this.rectList[this.rectList.length] = rect;
     this.sendToParent();
   };
 }

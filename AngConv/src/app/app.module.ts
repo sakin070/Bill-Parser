@@ -1,11 +1,12 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
+import { MDBBootstrapModule } from "angular-bootstrap-md";
 
-import { AppComponent } from './app.component';
-import { RectorComponent } from './rector/rector.component';
-import { SelectionCanvasComponent } from './selection-canvas/selection-canvas.component';
-import { ConfigTableComponent } from './config-table/config-table.component';
-import { DirectParseComponent } from './direct-parse/direct-parse.component';
+import { AppComponent } from "./app.component";
+import { RectorComponent } from "./rector/rector.component";
+import { SelectionCanvasComponent } from "./selection-canvas/selection-canvas.component";
+import { ConfigTableComponent } from "./config-table/config-table.component";
+import { DirectParseComponent } from "./direct-parse/direct-parse.component";
 
 @NgModule({
   declarations: [
@@ -15,10 +16,8 @@ import { DirectParseComponent } from './direct-parse/direct-parse.component';
     ConfigTableComponent,
     DirectParseComponent
   ],
-  imports: [
-    BrowserModule
-  ],
+  imports: [BrowserModule],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
