@@ -75,7 +75,14 @@ export class RectorComponent implements OnInit {
       this.ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
     }
     this.isDirty = false;
-    this.ctx.strokeRect(this.onSelected.x, this.onSelected.y, this.onSelected.w, this.onSelected.h);
+    if (typeof this.onSelected !== "undefined") {
+      this.ctx.strokeRect(
+        this.onSelected.x,
+        this.onSelected.y,
+        this.onSelected.w,
+        this.onSelected.h
+      );
+    }
     for (let i = 0; i < this.rectList.length; i++) {
       const rect = this.rectList[i];
       this.ctx.strokeRect(rect["x"], rect["y"], rect["w"], rect["h"]);
