@@ -20,12 +20,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr tableCol *ngFor="let el of rectList">
+          <tr tableCol *ngFor="let el of rectList; let i = index">
             <td>{{ el.x }}</td>
             <td>{{ el.y }}</td>
+            <button (click)="onClickRemove(i)">Remove</button>
           </tr>
         </tbody>
-        <button (click)="onClick()">Add Field</button>
+        <button (click)="onClickAdd()">Add Field</button>
       </table>
     </div>
   </div>

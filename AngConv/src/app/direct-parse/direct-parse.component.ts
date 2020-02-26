@@ -35,8 +35,12 @@ export class DirectParseComponent implements OnInit {
     }
   }
 
-  onClick() {
+  onClickAdd() {
     this.storeSelection();
+  }
+
+  onClickRemove(x) {
+    this.rectList.splice(x, 1);
   }
 
   storeSelection = () => {
