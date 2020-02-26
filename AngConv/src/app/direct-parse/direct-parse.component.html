@@ -17,16 +17,28 @@
             <td>
               Field Name
             </td>
+            <td>
+              X
+            </td>
+            <td>
+              Y
+            </td>
           </tr>
         </thead>
         <tbody>
           <tr tableCol *ngFor="let el of rectList; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td><input #box /></td>
             <td>{{ el.x }}</td>
             <td>{{ el.y }}</td>
+
             <button (click)="onClickRemove(i)">Remove</button>
           </tr>
         </tbody>
-        <button (click)="onClickAdd()">Add Field</button>
+        <tfoot>
+          <button (click)="onClickAdd()">Add Field</button>
+          <button (click)="onClickAdd()">Parse</button>
+        </tfoot>
       </table>
     </div>
   </div>

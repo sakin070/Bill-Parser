@@ -16,6 +16,7 @@ export class DirectParseComponent implements OnInit {
   rectList = [];
   parsedText = "";
   inputList = [];
+  field = "";
 
   ngOnInit() {
     /**
@@ -56,27 +57,4 @@ export class DirectParseComponent implements OnInit {
     if (!currentSelection) {
     }
   };
-
-  //Not sure yet
-  updateNameValue = e => {
-    this.inputValue = e.target.value;
-  };
-
-  viewDecider() {
-    return `
-<div>
-  <div className="row">
-    <div>
-      <rector
-        className="col-lg-9"
-        [rectList]="rectList"
-        (rectListEvent)="receiveFromChild($event)"
-      ></rector>
-    </div>
-    <div className="col-lg-3"></div>
-  </div>
-</div>
-
-      `;
-  }
 }
