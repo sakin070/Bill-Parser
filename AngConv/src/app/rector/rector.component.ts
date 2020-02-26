@@ -103,6 +103,8 @@ export class RectorComponent implements OnInit {
 
   onMouseDown = e => {
     this.isDrag = true;
+    //So box doesnt persist on drag
+    this.onSelected = {};
     this.curX = this.startX = e.offsetX;
     this.curY = this.startY = e.offsetY;
     requestAnimationFrame(this.updateCanvas);
